@@ -10,6 +10,11 @@ Vagrant.configure(2) do |config|
      vb.memory = "2048"
   end
 
+  #nib specifics
+  config.vm.network "forwarded_port", guest: 8443, host: 8443
+  config.vm.network "forwarded_port", guest: 443, host: 443
+  config.vm.network "private_network", ip: "192.168.50.4" # vagrant host is 192.168.50.4, windows host is 192.168.50.1
+
   #TODO make this check connectivity on start
   if Vagrant.has_plugin?('vagrant-proxyconf')
     config.proxy.http = "http://buildproxy.nibdom.com.au:3128/"
