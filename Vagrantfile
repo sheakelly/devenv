@@ -15,22 +15,22 @@ Vagrant.configure(2) do |config|
   config.vm.network "forwarded_port", guest: 443, host: 443
   config.vm.network "private_network", ip: "192.168.50.4" # vagrant host is 192.168.50.4, windows host is 192.168.50.1
 
-  #TODO make this check connectivity on start
+  # #TODO make this check connectivity on start
+  # if Vagrant.has_plugin?('vagrant-proxyconf')
+  #   config.proxy.http = "http://buildproxy.nibdom.com.au:3128/"
+  #   config.proxy.https = "http://buildproxy.nibdom.com.au:3128/"
+  #   config.proxy.no_proxy = '"localhost, 127.0.0.*, 10.*, 192.168.*"'
+  # else
+  #   puts "vagrant-proxyconf missing, please install the vagrant-proxyconf plugin!"
+  #   puts "Run this command in your terminal:"
+  #   puts "vagrant plugin install vagrant-proxyconf"
+  #   exit 1
+  # end
   if Vagrant.has_plugin?('vagrant-proxyconf')
-    config.proxy.http = "http://buildproxy.nibdom.com.au:3128/"
-    config.proxy.https = "http://buildproxy.nibdom.com.au:3128/"
-    config.proxy.no_proxy = '"localhost, 127.0.0.*, 10.*, 192.168.*"'
-  else
-    puts "vagrant-proxyconf missing, please install the vagrant-proxyconf plugin!"
-    puts "Run this command in your terminal:"
-    puts "vagrant plugin install vagrant-proxyconf"
-    exit 1
+    config.proxy.http = ""
+    config.proxy.https = ""
+    config.proxy.no_proxy = '"*"'
   end
-    # if Vagrant.has_plugin?('vagrant-proxyconf')
-    #   config.proxy.http = ""
-    #   config.proxy.https = ""
-    #   config.proxy.no_proxy = '"*"'
-    # end
 
   private_key_path = File.join(Dir.home, ".ssh", "id_rsa")
   public_key_path = File.join(Dir.home, ".ssh", "id_rsa.pub")
@@ -69,6 +69,7 @@ Vagrant.configure(2) do |config|
     git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
     git clone https://github.com/sheakelly/dotfiles ~/dotfiles
     cd ~/dotfiles && ./install.sh
+    git config --global core.editor "vim"
 
     ###
     # Install aws cli
