@@ -12,25 +12,11 @@ Vagrant.configure(2) do |config|
 
   #nib specifics
   config.vm.network "forwarded_port", guest: 8443, host: 8443
+  config.vm.network "forwarded_port", guest: 8444, host: 8444
+  config.vm.network "forwarded_port", guest: 8445, host: 8445
   config.vm.network "forwarded_port", guest: 443, host: 443
+  config.vm.network "forwarded_port", guest: 3000, host: 3000
   config.vm.network "private_network", ip: "192.168.50.4" # vagrant host is 192.168.50.4, windows host is 192.168.50.1
-
-  # #TODO make this check connectivity on start
-  # if Vagrant.has_plugin?('vagrant-proxyconf')
-  #   config.proxy.http = "http://buildproxy.nibdom.com.au:3128/"
-  #   config.proxy.https = "http://buildproxy.nibdom.com.au:3128/"
-  #   config.proxy.no_proxy = '"localhost, 127.0.0.*, 10.*, 192.168.*"'
-  # else
-  #   puts "vagrant-proxyconf missing, please install the vagrant-proxyconf plugin!"
-  #   puts "Run this command in your terminal:"
-  #   puts "vagrant plugin install vagrant-proxyconf"
-  #   exit 1
-  # end
-  if Vagrant.has_plugin?('vagrant-proxyconf')
-    config.proxy.http = ""
-    config.proxy.https = ""
-    config.proxy.no_proxy = '"*"'
-  end
 
   private_key_path = File.join(Dir.home, ".ssh", "id_rsa")
   public_key_path = File.join(Dir.home, ".ssh", "id_rsa.pub")
@@ -48,6 +34,7 @@ Vagrant.configure(2) do |config|
     mkdir /home/#{username}/.ssh
     echo '#{private_key}' > /home/#{username}/.ssh/id_rsa
     chmod 600 /home/#{username}/.ssh/id_rsa
+
     echo '#{public_key}' > /home/#{username}/.ssh/authorized_keys
     chmod 600 /home/#{username}/.ssh/authorized_keys
     chown -R #{username}.#{username} /home/#{username}/.ssh
@@ -87,6 +74,10 @@ Vagrant.configure(2) do |config|
     curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` > /tmp/docker-compose
     sudo cp /tmp/docker-compose /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
+
+    ###
+    # Install postgresql
+
   SCRIPT
 
 
