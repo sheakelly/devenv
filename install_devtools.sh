@@ -1,6 +1,8 @@
 
 apt-get update
 apt-get install -y git-core curl
+# tags support
+apt-get install -y global exuberant-ctags python-pygments
 # install zsh
 apt-get install -y zsh
 echo 'exec /bin/zsh -l' >> ~/.bash_profile

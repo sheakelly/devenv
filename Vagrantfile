@@ -16,6 +16,7 @@ Vagrant.configure(2) do |config|
   config.vm.network "forwarded_port", guest: 8445, host: 8445
   config.vm.network "forwarded_port", guest: 443, host: 443
   config.vm.network "forwarded_port", guest: 3000, host: 3000
+  config.vm.network "forwarded_port", guest: 3001, host: 3001
   config.vm.network "private_network", ip: "192.168.50.4" # vagrant host is 192.168.50.4, windows host is 192.168.50.1
 
   private_key_path = File.join(Dir.home, ".ssh", "id_rsa")
