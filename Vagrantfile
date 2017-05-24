@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 Vagrant.configure(2) do |config|
 
-  config.vm.box = "adaptiveme/vivid64"
+  config.vm.box = "adaptiveme/xenial64"
   #config.vm.hostname = "devbox"
 
   config.vm.provider "virtualbox" do |vb|
@@ -50,13 +50,15 @@ Vagrant.configure(2) do |config|
     # Install dev tools
     ###
     apt-get update
-    apt-get install -y git-core curl tmux zsh emacs python2.7
+    #apt-get install -y git-core curl tmux zsh emacs python2.7
+    apt-get install -y git-core curl zsh python2.7
     echo 'exec /bin/zsh -l' >> ~/.bash_profile
     echo 'export SHELL=/bin/zsh' >> ~/.bash_profile
     sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-    git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
-    git clone https://github.com/sheakelly/dotfiles ~/dotfiles
-    cd ~/dotfiles && ./install.sh
+
+    mkdir ~/dev
+    git clone https://github.com/sheakelly/dotfiles ~/dev/dotfiles
+    cd ~/dev/dotfiles && ./install.sh
     git config --global core.editor "vim"
 
     ###
@@ -77,12 +79,17 @@ Vagrant.configure(2) do |config|
     sudo chmod +x /usr/local/bin/docker-compose
 
     ###
-    # Install postgresql
+    # Install vim 8.0
+    ###
+    sudo add-apt-repository ppa:jonathonf/vim
+    sudo apt update
+    sudo apt install vim
+
+    ###
+    # Install nvm ( Node Version Manager)
+    ###
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
 
   SCRIPT
 
-
-  #config.vm.provision :shell, :path => "install_devtools.sh"
-  #config.vm.provision :shell, :path => "install_node.sh"
-  #config.vm.provision :shell, :path => "install_ruby.sh"
 end
